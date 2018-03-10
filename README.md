@@ -4,7 +4,7 @@ A simple WordPress plugin to create custom shortcodes from the WordPress control
 
 ## Installing
 
-You can easily install this plugin in your WordPress installation following these steps:
+You can easily install this plugin in your WordPress site following these steps:
 
 - Download the ZIP archive.
 - Upload the custom-shortcodes folder into your WordPress plugins folder.
