@@ -233,10 +233,12 @@ class FTCustomShortcodesAdmin {
         $original_name = basename($this->request('original-name'));
         $action = basename($this->request(static::$action, 'store', ['store', 'update']));
 
+        $sanitized = $this->santize($shortcode);
+
         $result = [
             'valid' => TRUE,
             'message' => 'Valid name',
-            'sanitized' => $this->santize($shortcode),
+            'sanitized' => $sanitized,
         ];
 
         // If is a new shortcode or it's renaming an existing one...
@@ -247,7 +249,7 @@ class FTCustomShortcodesAdmin {
                 $result = [
                     'valid' => FALSE,
                     'message' => 'WARNING: Shortcode already present!',
-                    'sanitized' => $this->santize($shortcode),
+                    'sanitized' => $sanitized,
                 ];
             }
         }
