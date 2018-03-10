@@ -87,7 +87,8 @@ class FTCustomShortcodes {
      * @return void
      */
      public function action_enqueue_scripts($hook) {
-        if ($hook != 'settings_page_ftcs-plugin') {
+
+        if (substr($hook, - strlen(FTCustomShortcodesAdmin::$page)) != FTCustomShortcodesAdmin::$page) {
             return;
         }
 
@@ -96,7 +97,6 @@ class FTCustomShortcodes {
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_style ('wp-jquery-ui-dialog');
 
-        // enqueue_style('ftcs-jquery-ui', plugins_url('assets/jquery-ui.min.css', __DIR__));
      }
 
     /**

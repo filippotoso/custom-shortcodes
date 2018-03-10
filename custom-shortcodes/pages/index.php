@@ -25,7 +25,7 @@
 
 </div>
 
-<div id="dialog-confirm" title="Are you really sure?" class="hide" data-url="">
+<div id="dialog-confirm" title="Are you really sure?" data-url="">
   <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>The shortcode will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 

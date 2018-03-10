@@ -5,10 +5,10 @@ class FTCustomShortcodesAdmin {
     use FTCustomShortcodesSetup;
 
     // The GET parameter to execute  a specific action
-    protected static $action = 'ftcs-action';
+    public static $action = 'ftcs-action';
 
     // The GET parameter to select a specific page to show
-    protected static $page = 'ftcs-plugin';
+    public static $page = 'ftcs-plugin';
 
 
     /**
@@ -24,7 +24,7 @@ class FTCustomShortcodesAdmin {
         if (current_user_can('manage_options')) {
 
             add_action('admin_menu', function() {
-                add_options_page('Custom Shortcodes Configuration', 'Custom Shortcodes', 'manage_options', static::$page, [$this, 'admin_page']);
+                add_management_page('Custom Shortcodes Configuration', 'Custom Shortcodes', 'manage_options', static::$page, [$this, 'admin_page']);
             });
 
             add_action('admin_action_ftcs_manage_shortcode', [$this, 'action_manage_shortcode']);
