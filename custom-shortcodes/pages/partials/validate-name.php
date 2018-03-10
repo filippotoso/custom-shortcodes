@@ -12,6 +12,8 @@ jQuery(document).ready(function($) {
         };
 
         jQuery.post(ajaxurl, data, function(response) {
+
+            $(':input[name=name]').val(response.sanitized);
             $('#nameError').html(response.message)
             if (response.valid) {
                 $('#nameError').addClass('hide');

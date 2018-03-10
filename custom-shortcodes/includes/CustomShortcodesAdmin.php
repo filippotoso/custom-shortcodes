@@ -220,16 +220,24 @@ class FTCustomShortcodesAdmin {
 
     }
 
-    public function action_validate_name() {
+    protected function santize($string) {
+        $string = preg_replace('#[^a-z0-9\-_]#si', ' ', $string);
+        $string = trim(preg_replace('#\s+#si', ' ', $string));
+        $string = str_replace(' ', '-', $string);
+        return $string;
+    }
 
-        $result = [
-            'valid' => TRUE,
-            'message' => 'Valid name',
-        ];
+    public function action_validate_name() {
 
         $shortcode = basename($this->request('name'));
         $original_name = basename($this->request('original-name'));
         $action = basename($this->request(static::$action, 'store', ['store', 'update']));
+
+        $result = [
+            'valid' => TRUE,
+            'message' => 'Valid name',
+            'sanitized' => $this->santize($shortcode),
+        ];
 
         // If is a new shortcode or it's renaming an existing one...
         if (($action == 'store') || ($shortcode != $original_name)) {
@@ -239,6 +247,7 @@ class FTCustomShortcodesAdmin {
                 $result = [
                     'valid' => FALSE,
                     'message' => 'WARNING: Shortcode already present!',
+                    'sanitized' => $this->santize($shortcode),
                 ];
             }
         }
