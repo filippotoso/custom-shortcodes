@@ -36,8 +36,19 @@ class FTCustomShortcodes {
      * @return void
      */
     public function activate() {
-        mkdir(__DIR__ . '/../shortcodes/active', 0777);
-        mkdir(__DIR__ . '/../shortcodes/inactive', 0777);
+
+        if (!is_dir(__DIR__ . '/../shortcodes/active')) {
+            mkdir(__DIR__ . '/../shortcodes/active', 0777);
+        }
+
+        if (!is_dir(__DIR__ . '/../shortcodes/active')) {
+            mkdir(__DIR__ . '/../shortcodes/inactive', 0777);
+        }
+
+        if (file_exists(__DIR__ . '/../assets/hello-world.php') && !file_exists(__DIR__ . '/../shortcodes/active/hello-world.php')) {
+            rename(__DIR__ . '/../assets/hello-world.php', __DIR__ . '/../shortcodes/active/hello-world.php');
+        }
+
     }
 
     /**
