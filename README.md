@@ -1,4 +1,4 @@
-# Wordpress Custom Shortcodes
+# WordPress Custom Shortcodes
 
 A simple WordPress plugin to create custom shortcodes from the WordPress control panel.
 
