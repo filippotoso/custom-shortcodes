@@ -28,6 +28,7 @@ class FTCustomShortcodesAdmin {
             });
 
             add_action('admin_action_ftcs_manage_shortcode', [$this, 'action_manage_shortcode']);
+            add_action('wp_ajax_ftcs_validate_name', [$this, 'action_validate_name']);
 
         }
 
@@ -49,6 +50,7 @@ class FTCustomShortcodesAdmin {
                     'activate' => admin_url('admin.php?page=' . static::$page . '&' . static::$action . '=activate&shortcode=' . $name),
                     'deactivate' => admin_url('admin.php?page=' . static::$page . '&' . static::$action . '=deactivate&shortcode=' . $name),
                     'delete' => admin_url('admin.php?page=' . static::$page . '&' . static::$action . '=delete&shortcode=' . $name),
+                    'preview' => admin_url('admin.php?page=' . static::$page . '&' . static::$action . '=preview&shortcode=' . $name),
                 ],
             ];
 
@@ -64,7 +66,7 @@ class FTCustomShortcodesAdmin {
      */
     public function admin_page() {
 
-        $action = $this->request(static::$action, 'index', ['index', 'create', 'edit', 'delete', 'activate', 'deactivate']);
+        $action = $this->request(static::$action, 'index', ['index', 'create', 'edit', 'preview', 'delete', 'activate', 'deactivate']);
 
         $status = FALSE;
 
@@ -117,7 +119,7 @@ class FTCustomShortcodesAdmin {
             'config' => $this->plugin->getConfig(),
             'status' => isset($_GET['status']) ? $_GET['status'] : $status,
             'shortcode' => [
-                'name' => '',
+                'name' => $shortcode,
                 'type' => 'inactive',
                 'content' => '',
             ],
@@ -151,6 +153,17 @@ class FTCustomShortcodesAdmin {
             $params['shortcodes']['active'] = $this->shortcodesList('active');
             $params['shortcodes']['inactive'] = $this->shortcodesList('inactive');
         }
+
+        if ($action == 'preview') {
+
+            // Temporary register an inactive shortcode for preview
+            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+            if (file_exists($inactive)) {
+                $this->plugin->registerShortcode($inactive);
+            }
+
+        }
+
 
         echo($this->plugin->render(__DIR__ . '/../pages/' . $action . '.php', $params));
 
@@ -203,7 +216,38 @@ class FTCustomShortcodesAdmin {
 
     }
 
+    public function action_validate_name() {
+
+        $result = [
+            'valid' => TRUE,
+            'message' => 'Valid name',
+        ];
+
+        $shortcode = basename($this->request('name'));
+        $original_name = basename($this->request('original-name'));
+        $action = basename($this->request(static::$action, 'store', ['store', 'update']));
+
+        // If is a new shortcode or it's renaming an existing one...
+        if (($action == 'store') || ($shortcode != $original_name)) {
+            $active = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
+            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+            if (file_exists($active) || file_exists($inactive)) {
+                $result = [
+                    'valid' => FALSE,
+                    'message' => 'WARNING: Shortcode already present!',
+                ];
+            }
+        }
+
+        echo(json_encode($result));
+        wp_die();
+
+    }
+
     public function action_manage_shortcode() {
+
+        $_POST = stripslashes_deep($_POST);
+        $_GET = stripslashes_deep($_GET);
 
         $action = $this->request(static::$action, 'index', ['store', 'update']);
 

@@ -2,7 +2,7 @@
 
     <h1 class="wp-heading-inline">Custom Shortcodes</h1>
 
-     <a href="<?= admin_url('admin.php?page=' . $page . '&' . $action . '=create'); ?>" class="page-title-action">New shortcode</a>
+     <a href="<?= admin_url('admin.php?page=' . $page . '&' . $action . '=create'); ?>" class="page-title-action">New Shortcode</a>
     <hr class="wp-header-end">
 
     <?php include(__DIR__ . '/partials/status.php'); ?>
@@ -31,14 +31,14 @@
 
 <script>
 
-jQuery(function() {
+jQuery(function($) {
 
-    jQuery('.deleteBtn').on('click', function() {
-        jQuery('#dialog-confirm').data('url', jQuery(this).data('url'));
-        jQuery('#dialog-confirm').dialog('open');
+    $('.deleteBtn').on('click', function() {
+        $('#dialog-confirm').data('url', $(this).data('url'));
+        $('#dialog-confirm').dialog('open');
     });
 
-    jQuery('#dialog-confirm').dialog({
+    $('#dialog-confirm').dialog({
         autoOpen: false,
         resizable: false,
         height: 'auto',
@@ -46,11 +46,11 @@ jQuery(function() {
         modal: true,
         buttons: {
             'Delete the shortcode': function() {
-                window.location.href = jQuery(this).data('url');
-                jQuery(this).dialog('close');
+                window.location.href = $(this).data('url');
+                $(this).dialog('close');
             },
             Cancel: function() {
-                jQuery(this).dialog('close');
+                $(this).dialog('close');
             }
         }
     });

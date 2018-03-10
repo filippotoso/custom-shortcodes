@@ -60,6 +60,20 @@ class FTCustomShortcodes {
 
     }
 
+    public function registerShortcode($shortcode) {
+
+        if (file_exists($shortcode)) {
+
+            $shortcode = basename($shortcode, '.php');
+
+            add_shortcode($shortcode , function($atts, $content = '') use ($shortcode) {
+                return $this->shortcode($shortcode, $atts, $content);
+            });
+
+        }
+
+    }
+
     /**
      * Here the plugin is initialized.
      * Include in this method all the required registrations
@@ -72,13 +86,11 @@ class FTCustomShortcodes {
         $shortcodes = glob(__DIR__ . '/../shortcodes/active/*.php');
 
         foreach ($shortcodes as $shortcode) {
-            $shortcode = basename($shortcode, '.php');
-            add_shortcode($shortcode , function($atts, $content = '') use ($shortcode) {
-                return $this->shortcode($shortcode, $atts, $content);
-            });
+            $this->registerShortcode($shortcode);
         }
 
         add_action('admin_enqueue_scripts', [$this, 'action_enqueue_scripts']);
+
 	}
 
     /**
@@ -96,6 +108,8 @@ class FTCustomShortcodes {
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-dialog');
         wp_enqueue_style ('wp-jquery-ui-dialog');
+
+        wp_enqueue_style('ftcs-custom-css', plugins_url('assets/custom.css', __DIR__));
 
      }
 
@@ -146,7 +160,15 @@ class FTCustomShortcodes {
         $file = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
 
         if (!file_exists($file)) {
-            throw new Exception(sprintf('Missing %s file', $file));
+
+            if (is_admin() && isset($_GET[FTCustomShortcodesAdmin::$action]) && ($_GET[FTCustomShortcodesAdmin::$action] == 'preview')) {
+                $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+                if (!file_exists($inactive)) {
+                    throw new Exception(sprintf('Missing %s file', $file));
+                }
+                $file = $inactive;
+            }
+
         }
 
         $params = [

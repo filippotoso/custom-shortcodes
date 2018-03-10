@@ -1,0 +1,28 @@
+.button-red {
+    background-color: #CC0000 !important;
+    color: #FFFFFF !important;
+    border-color: #990000 !important;
+    box-shadow: 0 1px 0 #AA0000 !important;
+}
+
+.button-green {
+    background-color: #00AA00 !important;
+    color: #FFFFFF !important;
+    border-color: #009900 !important;
+    box-shadow: 0 1px 0 #008800 !important;
+}
+
+.actions-button a {
+    margin: 0px 6px 0px 6px !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+}
+
+.hide {
+    display: none;
+}
+
+#nameError {
+    font-weight: bold;
+    color: #CC0000;
+}

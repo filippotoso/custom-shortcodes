@@ -26,15 +26,15 @@
                         <strong class="row-title"><?= $shortcode['name']; ?></strong>
                     </td>
                     <td class="date column-date" data-colname="Modified at"><?= date('Y-m-d H:i:s', $shortcode['modified_at']); ?></td>
-                    <td>
+                    <td class="actions-button">
                         <a href="<?= $shortcode['actions']['edit'] ?>" class="button button-primary">Edit</a>
-                        <!-- onclick="return confirm('Do you really want to delete this shortcode?')"  -->
-                        <a href="#" data-url="<?= $shortcode['actions']['delete'] ?>" class="button deleteBtn" style="background-color: #CC0000; color: #FFFFFF; border-color: #990000; box-shadow: 0 1px 0 #880000;">Delete</a>
+                        <a href="#" data-url="<?= $shortcode['actions']['delete'] ?>" class="button button-red deleteBtn">Delete</a>
                         <?php if ($type == 'active') : ?>
                             <a href="<?= $shortcode['actions']['deactivate'] ?>" class="button button-secondary">Deactivate</a>
                         <?php elseif ($type == 'inactive') : ?>
                             <a href="<?= $shortcode['actions']['activate'] ?>" class="button">Activate</a>
                         <?php endif; ?>
+                        <a href="<?= $shortcode['actions']['preview'] ?>" class="button button-green" style="">Preview</a>
                     </td>
                 </tr>
 

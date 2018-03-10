@@ -4,6 +4,7 @@
             <th scope="row"><label for="name">Shortcode name</label></th>
             <td>
                 <input name="name" type="text" value="<?= htmlentities($shortcode['name'], ENT_QUOTES); ?>" class="regular-text" />
+                <p id="nameError" class="hide">WARNING: Shortcode already present!</p>
                 <p class="description">The name of the shortcode without square brackets (it must be a valid filename).</p>
             </td>
         </tr>

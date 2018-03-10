@@ -1,7 +1,7 @@
 <?php
 /**
 * Plugin Name:  Custom Shortcodes
-* Description:  Create, test and deploy custom shortcode form WordPres control panel
+* Description:  Create, test and deploy custom shortcodes form WordPress control panel
 * Version:      20180210
 * Author:       Filippo Toso
 * Author URI:   https://www.filippotoso.com/
