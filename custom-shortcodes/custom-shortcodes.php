@@ -1,6 +1,6 @@
 <?php
 /**
-* Plugin Name:  Custom Shortcodes
+* Plugin Name:  Custom Shortcodes (FT)
 * Description:  Create, test and deploy custom shortcodes form WordPress control panel
 * Version:      20180210
 * Author:       Filippo Toso

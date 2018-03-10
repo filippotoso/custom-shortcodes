@@ -1,4 +1,4 @@
-=== Custom Shortcodes ===
+=== Custom Shortcodes (FT) ===
 Contributors: filippo.toso
 Tags: shortcodes
 Requires at least: 4.9.0
