@@ -126,7 +126,8 @@ class FTCustomShortcodesAdmin {
             'shortcodes' => [
                 'active' => [],
                 'inactive' => [],
-            ]
+            ],
+            'code' => '',
         ];
 
         if ($action == 'edit') {
@@ -161,6 +162,9 @@ class FTCustomShortcodesAdmin {
             if (file_exists($inactive)) {
                 $this->plugin->registerShortcode($inactive);
             }
+
+            $code = $this->request('code');
+            $params['code'] = is_null($code) ? sprintf('[%s]', $shortcode) : $code;
 
         }
 
