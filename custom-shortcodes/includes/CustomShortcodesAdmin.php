@@ -38,6 +38,10 @@ class FTCustomShortcodesAdmin {
 
         $shortcodes = glob(sprintf('%s/../shortcodes/%s/*.php', __DIR__, $type));
 
+        usort($shortcodes, function ($a, $b) {
+            return strcmp(basename($a), basename($b));
+        });
+
         $results = [];
         foreach ($shortcodes as $shortcode) {
             $name = basename($shortcode, '.php');
