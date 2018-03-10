@@ -1,5 +1,5 @@
 <?php
 
-require_once(__DIR__ . '/CustomShostcodesTraits.php');
-require_once(__DIR__ . '/CustomShostcodes.php');
-require_once(__DIR__ . '/CustomShostcodesAdmin.php');
+require_once(__DIR__ . '/CustomShortcodesTraits.php');
+require_once(__DIR__ . '/CustomShortcodes.php');
+require_once(__DIR__ . '/CustomShortcodesAdmin.php');

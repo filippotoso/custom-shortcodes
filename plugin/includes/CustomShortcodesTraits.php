@@ -1,6 +1,6 @@
 <?php
 
-trait FTCustomShortcodeSetup {
+trait FTCustomShortcodesSetup {
 
     // The instance of the class (to avoid global variables)
     protected static $instance = NULL;
