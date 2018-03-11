@@ -36,7 +36,7 @@ class FTCustomShortcodesAdmin {
 
     protected function shortcodesList($type) {
 
-        $shortcodes = glob(sprintf('%s/../shortcodes/%s/*.php', __DIR__, $type));
+        $shortcodes = glob($this->plugin->getShortcodeDir($type) . '/*.php');
 
         usort($shortcodes, function ($a, $b) {
             return strcmp(basename($a), basename($b));
@@ -87,8 +87,8 @@ class FTCustomShortcodesAdmin {
 
             if ($action == 'activate') {
 
-                $from = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
-                $to = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
+                $from = $this->plugin->getShortcodePath('inactive', $shortcode);
+                $to = $this->plugin->getShortcodePath('active', $shortcode);
 
                 if (file_exists($from)) {
                     rename($from, $to);
@@ -101,8 +101,8 @@ class FTCustomShortcodesAdmin {
 
             if ($action == 'deactivate') {
 
-                $from = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
-                $to = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+                $from = $this->plugin->getShortcodePath('active', $shortcode);
+                $to = $this->plugin->getShortcodePath('inactive', $shortcode);
 
                 if (file_exists($from)) {
                     rename($from, $to);
@@ -136,8 +136,8 @@ class FTCustomShortcodesAdmin {
 
         if ($action == 'edit') {
 
-            $active = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
-            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+            $active = $this->plugin->getShortcodePath('active', $shortcode);
+            $inactive = $this->plugin->getShortcodePath('inactive', $shortcode);
 
             if (file_exists($active)) {
                 $params['shortcode']['name'] = $shortcode;
@@ -162,7 +162,7 @@ class FTCustomShortcodesAdmin {
         if ($action == 'preview') {
 
             // Temporary register an inactive shortcode for preview
-            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+            $inactive = $this->plugin->getShortcodePath('inactive', $shortcode);
             if (file_exists($inactive)) {
                 $this->plugin->registerShortcode($inactive);
             }
@@ -212,12 +212,12 @@ class FTCustomShortcodesAdmin {
 
     protected function unlinkShortcode($shortcode) {
 
-        $active = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
+        $active = $this->plugin->getShortcodePath('active', $shortcode);
         if (file_exists($active)) {
             unlink($active);
         }
 
-        $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+        $inactive = $this->plugin->getShortcodePath('inactive', $shortcode);
         if (file_exists($inactive)) {
             unlink($inactive);
         }
@@ -247,8 +247,9 @@ class FTCustomShortcodesAdmin {
 
         // If is a new shortcode or it's renaming an existing one...
         if (($action == 'store') || ($shortcode != $original_name)) {
-            $active = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
-            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+
+            $active = $this->plugin->getShortcodePath('active', $shortcode);
+            $inactive = $this->plugin->getShortcodePath('inactive', $shortcode);
             if (file_exists($active) || file_exists($inactive)) {
                 $result = [
                     'valid' => FALSE,
@@ -276,8 +277,8 @@ class FTCustomShortcodesAdmin {
 
         if ($action == 'store') {
 
-            $active = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
-            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+            $active = $this->plugin->getShortcodePath('active', $shortcode);
+            $inactive = $this->plugin->getShortcodePath('inactive', $shortcode);
 
             if (!file_exists($active) && !file_exists($inactive)) {
 
@@ -285,7 +286,7 @@ class FTCustomShortcodesAdmin {
                 $type = basename($this->request('type', 'inactive', ['active', 'inactive']));
                 $content = $this->request('content', '');
 
-                $file = sprintf('%s/../shortcodes/%s/%s.php', __DIR__, $type, $shortcode);
+                $file = $this->plugin->getShortcodePath($type, $shortcode);
                 file_put_contents($file, $content);
 
                 $status = 'stored';
@@ -306,15 +307,15 @@ class FTCustomShortcodesAdmin {
                 $this->unlinkShortcode($shortcode);
             }
 
-            $active = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
-            $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+            $active = $this->plugin->getShortcodePath('active', $shortcode);
+            $inactive = $this->plugin->getShortcodePath('inactive', $shortcode);
 
             if (!file_exists($active) && !file_exists($inactive)) {
 
                 $type = $this->request('type', 'inactive', ['active', 'inactive']);
                 $content = $this->request('content', '');
 
-                $file = sprintf('%s/../shortcodes/%s/%s.php', __DIR__, basename($type), $shortcode);
+                $file = $this->plugin->getShortcodePath(basename($type), $shortcode);
                 file_put_contents($file, $content);
 
                 $status = 'updated';

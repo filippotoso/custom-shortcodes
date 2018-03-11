@@ -37,16 +37,24 @@ class FTCustomShortcodes {
      */
     public function activate() {
 
-        if (!is_dir(__DIR__ . '/../shortcodes/active')) {
-            mkdir(__DIR__ . '/../shortcodes/active', 0777);
+        $dir = dirname($this->getShortcodeDir('active'));
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, TRUE);
         }
 
-        if (!is_dir(__DIR__ . '/../shortcodes/active')) {
-            mkdir(__DIR__ . '/../shortcodes/inactive', 0777);
+        $dir = $this->getShortcodeDir('active');
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, TRUE);
         }
 
-        if (file_exists(__DIR__ . '/../assets/hello-world.php') && !file_exists(__DIR__ . '/../shortcodes/active/hello-world.php')) {
-            rename(__DIR__ . '/../assets/hello-world.php', __DIR__ . '/../shortcodes/active/hello-world.php');
+        $dir = $this->getShortcodeDir('inactive');
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, TRUE);
+        }
+
+        $file = $this->getShortcodePath('active', 'hello-world');
+        if (file_exists(__DIR__ . '/../assets/hello-world.php') && !file_exists($file)) {
+            copy(__DIR__ . '/../assets/hello-world.php', $file);
         }
 
     }
@@ -94,7 +102,7 @@ class FTCustomShortcodes {
      */
     public function init() {
 
-        $shortcodes = glob(__DIR__ . '/../shortcodes/active/*.php');
+        $shortcodes = glob($this->getShortcodeDir('active') . '/*.php');
 
         foreach ($shortcodes as $shortcode) {
             $this->registerShortcode($shortcode);
@@ -161,6 +169,27 @@ class FTCustomShortcodes {
     }
 
     /**
+     * Get shortcode path
+     * @method getShortcodePath
+     * @param  string  $type      active / inactive
+     * @param  string  $shortcode Shortcode name
+     * @return string
+     */
+    function getShortcodePath($type, $shortcode) {
+        return sprintf('%s/%s.php', $this->getShortcodeDir($type), $shortcode);
+    }
+
+    /**
+     * Get shortcode directory
+     * @method getShortcodeDir
+     * @param  string  $type      active / inactive
+     * @return string
+     */
+    function getShortcodeDir($type) {
+        return sprintf('%s/uploads/custom-shortcodes/%s', WP_CONTENT_DIR, basename($type));
+    }
+
+    /**
      * Render a shortcode
      * @method shortcode
      * @param  string   $name Name of the shortcode
@@ -168,12 +197,12 @@ class FTCustomShortcodes {
      */
     public function shortcode($shortcode, $atts, $content = '') {
 
-        $file = sprintf('%s/../shortcodes/active/%s.php', __DIR__, $shortcode);
+        $file = $this->getShortcodePath('active', $shortcode);
 
         if (!file_exists($file)) {
 
             if (is_admin() && isset($_GET[FTCustomShortcodesAdmin::$action]) && ($_GET[FTCustomShortcodesAdmin::$action] == 'preview')) {
-                $inactive = sprintf('%s/../shortcodes/inactive/%s.php', __DIR__, $shortcode);
+                $inactive = $this->getShortcodePath('inactive', $shortcode);
                 if (!file_exists($inactive)) {
                     throw new Exception(sprintf('Missing %s file', $file));
                 }

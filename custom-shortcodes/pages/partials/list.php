@@ -35,6 +35,7 @@
                         <a href="<?= $shortcode['actions']['preview'] ?>" class="button button-green" style="">Preview</a>
                         <a href="<?= $shortcode['actions']['edit'] ?>" class="button button-primary">Edit</a>
                         <a href="#" data-url="<?= $shortcode['actions']['delete'] ?>" class="button button-red deleteBtn">Delete</a>
+                        <a href="#" class="copy-shortcode button button-secondary" data-shortcode="<?= $shortcode['name']; ?>">Copy</a>
                     </td>
                 </tr>
 
