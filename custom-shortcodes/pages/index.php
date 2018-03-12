@@ -23,6 +23,14 @@
 
     </div>
 
+    <div style="float: right; margin-top: 1.4em;">
+        <form method="post" action="<?= admin_url('admin.php'); ?>">
+            <input type="hidden" name="action" value="ftcs_manage_shortcode" />
+            <input type="hidden" name="ftcs-action" value="download" />
+            <input type="submit" value="Download" class="button button-primary" />
+        </form>
+    </div>
+
 </div>
 
 <div id="dialog-confirm" title="Are you really sure?" data-url="">

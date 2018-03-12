@@ -269,11 +269,37 @@ class FTCustomShortcodesAdmin {
         $_POST = stripslashes_deep($_POST);
         $_GET = stripslashes_deep($_GET);
 
-        $action = $this->request(static::$action, 'index', ['store', 'update']);
+        $action = $this->request(static::$action, 'index', ['store', 'update', 'download']);
 
         $shortcode = basename($this->request('name'));
 
         $status = FALSE;
+
+        if ($action == 'download') {
+
+            include_once(ABSPATH . '/wp-admin/includes/class-pclzip.php');
+
+            $zip = get_temp_dir() . '/custom-short-codes.zip';
+
+            $archive = new PclZip($zip);
+
+            $folders = [
+                'active' => $this->plugin->getShortcodeDir('active'),
+                'inactive' => $this->plugin->getShortcodeDir('inactive'),
+            ];
+
+            foreach ($folders as $folder) {
+                $files = glob($folder . '/*.php');
+                foreach ($files as $file) {
+                    $archive->add($file, PCLZIP_OPT_REMOVE_PATH, dirname($file), PCLZIP_OPT_ADD_PATH, basename(dirname($file)));
+                }
+            }
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="custom-short-codes.zip"');
+            readfile($zip);
+            exit();
+
+        }
 
         if ($action == 'store') {
 
