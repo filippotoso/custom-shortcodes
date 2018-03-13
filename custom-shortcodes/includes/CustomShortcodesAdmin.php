@@ -281,6 +281,10 @@ class FTCustomShortcodesAdmin {
 
             $zip = get_temp_dir() . '/custom-short-codes.zip';
 
+            if (file_exists($zip)) {
+                unlink($zip);
+            }
+
             $archive = new PclZip($zip);
 
             $folders = [
@@ -294,9 +298,12 @@ class FTCustomShortcodesAdmin {
                     $archive->add($file, PCLZIP_OPT_REMOVE_PATH, dirname($file), PCLZIP_OPT_ADD_PATH, basename(dirname($file)));
                 }
             }
+
             header('Content-Type: application/zip');
             header('Content-Disposition: attachment; filename="custom-short-codes.zip"');
             readfile($zip);
+            unlink($zip);
+
             exit();
 
         }
