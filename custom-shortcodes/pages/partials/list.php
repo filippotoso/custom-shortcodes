@@ -1,15 +1,15 @@
-<table class="wp-list-table widefat fixed striped posts">
+<table class="widefat">
     <thead>
         <tr>
-            <th scope="col" id="name" class="manage-column column-title column-primary"><span>Shortcode</span></th>
-            <th scope="col" id="date" class="manage-column column-date column-primary"><span>Modified At</span></th>
-            <th scope="col" id="actions" class="manage-column">Actions</th>
+            <th scope="col" id="name" style="width: 20%"><span>Shortcode</span></th>
+            <th scope="col" id="date" style="width: 20%"><span>Modified At</span></th>
+            <th scope="col" id="actions" style="width: 60%">Actions</th>
         </tr>
     </thead>
 
     <?php if (empty($shortcodes[$type])) : ?>
 
-    <tbody id="the-list">
+    <tbody>
         <tr class="format-standard">
             <td colspan="3" align="center"><h3 style="margin-bottom: 1.2em;">No shortcodes found!</h3></td>
         </tr>
@@ -17,15 +17,15 @@
 
     <?php else : ?>
 
-        <tbody id="the-list">
+        <tbody>
 
             <?php foreach ($shortcodes[$type] as $shortcode) : ?>
 
                 <tr class="format-standard">
-                    <td class="title column-title column-primary page-title" data-colname="Shortcode">
+                    <td class="title" data-colname="Shortcode">
                         <strong class="row-title"><?= $shortcode['name']; ?></strong>
                     </td>
-                    <td class="date column-date" data-colname="Modified at"><?= date('Y-m-d H:i:s', $shortcode['modified_at']); ?></td>
+                    <td class="date" data-colname="Modified at"><?= date('Y-m-d H:i:s', $shortcode['modified_at']); ?></td>
                     <td class="actions-button">
                         <?php if ($type == 'active') : ?>
                             <a href="<?= $shortcode['actions']['deactivate'] ?>" class="button button-secondary">Deactivate</a>
